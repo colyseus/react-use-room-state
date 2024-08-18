@@ -1,5 +1,7 @@
 # Experimenting with `useRoomState` hook
 
+> This is a work-in-progress experiment and currently does not work as expected.
+
 The idea here is to create a React hook that is able to trigger a re-render only when the requested portion of the state receives an update.
 
 Since `@colyseus/schema` v3 exposes the `.triggerChanges` method from the `Decoder` - we can hopefully use this to our advantage.
