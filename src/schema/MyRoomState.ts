@@ -1,33 +1,16 @@
-import { MapSchema, Schema, defineTypes } from "@colyseus/schema"
-
-/**
- * I couldn't find a way to enable "experimentalDecorators" using Vite + TypeScript...
- * That's why I'm using the `defineTypes` instead of the `@type` decorator.
- */
+import { MapSchema, Schema, type } from "@colyseus/schema"
 
 export class Position extends Schema {
-  x: number = 0;
-  y: number = 0;
+   @type('number') x = 0;
+   @type('number') y = 0;
 }
-defineTypes(Position, {
-  x: "number",
-  y: "number",
-})
 
 export class Player extends Schema {
-  name: string = "Player";
-  position: Position = new Position();
+  @type('string') name: string = "Player";
+  @type(Position) position = new Position();
 }
-defineTypes(Player, {
-  name: "string",
-  position: Position,
-});
 
 export class MyRoomState extends Schema {
-  myString: string = "Hello world!";
-  players: MapSchema<Player> = new MapSchema<Player>();
+  @type('string') myString = "Hello world!";
+  @type({ map: Player }) players = new MapSchema<Player>();
 }
-defineTypes(MyRoomState, {
-  myString: "string",
-  players: { map: Player },
-});
