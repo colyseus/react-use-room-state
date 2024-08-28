@@ -23,7 +23,9 @@ The simulation of server-side changes are made via `simulatePatchState()`:
 
 ```typescript
 simulatePatchState((state) => {
-  const randomKey = Array.from(state.players.keys())[Math.floor(Math.random() * state.players.size)];
+  const randomKey = Array.from(state.players.keys())[
+    Math.floor(Math.random() * state.players.size)
+  ];
   state.players.delete(randomKey);
 });
 ```

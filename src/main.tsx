@@ -1,11 +1,14 @@
 import "./polyfill";
-import { StrictMode } from 'react'
-import { createRoot } from 'react-dom/client'
-import App from './App.tsx'
-import './index.css'
+import { StrictMode } from "react";
+import { createRoot } from "react-dom/client";
+import App from "./App";
+import "./index.css";
+import { ColyseusProvider } from "./colyseus/ColyseusProvider";
 
-createRoot(document.getElementById('root')!).render(
+createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <App />
+    <ColyseusProvider>
+      <App />
+    </ColyseusProvider>
   </StrictMode>,
-)
+);
