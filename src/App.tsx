@@ -33,7 +33,6 @@ function simulateRemovePlayer() {
 }
 
 function App() {
-
   const state = useRoomState((state) => state);
   const players = useRoomState((state) => state.players);
 
