@@ -2,6 +2,7 @@ import 'reflect-metadata';
 import { act, renderHook } from '@testing-library/react';
 import { describe, expect, test } from 'vitest';
 import { Room } from '@colyseus/sdk';
+import { getSchemaInstance } from '../schema/createSnapshot';
 import { useColyseusState } from '../schema/useColyseusState';
 import { useRoomState } from '../schema/useRoomState';
 import { MyRoomState, Player } from './schema/MyRoomState';
@@ -183,6 +184,33 @@ describe('derived roots keep snapshot identity intact', () => {
         expect(result.current.player).not.toBe(clientState.players.get('p0'));
         expect(Object.keys(result.current.player)).toEqual(['name', 'position', 'inventory']);
         expect(result.current.player).not.toHaveProperty('~refId');
+    });
+});
+
+describe('derived roots bridge back to decoded instances', () => {
+    test('getSchemaInstance resolves through a derived array', () => {
+        const { clientState, decoder, updateState } = withPlayers('P1');
+
+        const { result } = renderHook(() =>
+            useColyseusState(clientState, decoder, (s) => Array.from(s.players.values()))
+        );
+
+        expect(getSchemaInstance(result.current[0])).toBe(clientState.players.get('p0'));
+
+        act(() => { updateState((s) => { s.players.get('p0')!.name = 'renamed'; }); });
+
+        // the rebuilt snapshot has to stay resolvable, or predict.value() loses its source
+        expect(getSchemaInstance(result.current[0])).toBe(clientState.players.get('p0'));
+    });
+
+    test('getSchemaInstance resolves through a derived object literal', () => {
+        const { clientState, decoder } = withPlayers('P1');
+
+        const { result } = renderHook(() =>
+            useColyseusState(clientState, decoder, (s) => ({ player: s.players.get('p0')! }))
+        );
+
+        expect(getSchemaInstance(result.current.player)).toBe(clientState.players.get('p0'));
     });
 });
 

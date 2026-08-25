@@ -20,6 +20,12 @@ export function simulateState<TState extends Schema>(createState: () => TState) 
 
     // decode operations
     decoder.decode(encoded);
+
+    // clear the encoder's dirty state — part of the encode lifecycle contract
+    // (colyseus core does this after each patch); without it, the next
+    // encode() re-emits stale ops against a frozen index space and corrupts
+    // sequential array splices on the client.
+    encoder.discardChanges();
   }
 
   // Run an initial encode/decode step, so the client state is initialized ... otherwise, the first call to onAdd on a MapSchema in the state will fail.

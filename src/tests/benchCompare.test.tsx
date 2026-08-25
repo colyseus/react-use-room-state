@@ -82,7 +82,7 @@ function baseSnapshot(node: any, ctx: BaseCtx): any {
     result = changed ? out : prev;
   } else if (Schema.isSchema(node)) {
     const out: any = {}; let changed = prev === undefined;
-    for (const f of fields(node)) { const v = node[f]; if (typeof v === "function") continue; const sv = baseSnapshot(v, ctx); out[f] = sv; if (!changed && prev && prev[f] !== sv) changed = true; }
+    for (const f of fields(node)) { const v = (node as any)[f]; if (typeof v === "function") continue; const sv = baseSnapshot(v, ctx); out[f] = sv; if (!changed && prev && prev[f] !== sv) changed = true; }
     result = changed ? out : prev;
   } else { result = node; }
   ctx.parent = saved;

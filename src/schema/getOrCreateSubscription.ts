@@ -70,6 +70,14 @@ export function getOrCreateSubscription(roomState: Schema, decoder: Decoder): St
         originalDecode: decoder.decode,
     };
 
+    // Schema v5 only collects (and returns) DataChange[] when a
+    // `triggerChanges` subscriber exists. Seed a no-op so `decode()` reports
+    // changes; `Callbacks.get()` may later replace it — that's fine, the slot
+    // just needs to be defined.
+    if (decoder.triggerChanges === undefined) {
+        decoder.triggerChanges = () => { };
+    }
+
     // Wrap the decoder's decode method to intercept all state changes.
     // decode() is the single entry point for both full state syncs and
     // incremental patches, and it calls triggerChanges internally before

@@ -46,8 +46,8 @@ describe('useLobbyRoom', () => {
         await act(async () => { });
 
         const initial: RoomAvailable[] = [
-            { roomId: "r1", clients: 1, maxClients: 4, metadata: null, name: "game", publicAddress: "" },
-            { roomId: "r2", clients: 2, maxClients: 4, metadata: null, name: "game", publicAddress: "" },
+            { roomId: "r1", clients: 1, maxClients: 4, metadata: null, name: "game" },
+            { roomId: "r2", clients: 2, maxClients: 4, metadata: null, name: "game" },
         ];
         await act(async () => { emit("rooms", initial); });
 

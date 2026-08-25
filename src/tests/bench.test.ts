@@ -38,6 +38,7 @@ function simulate<T extends Schema>(make: () => T) {
     const apply = (fn: (s: T) => void) => {
         fn(server);
         decoder.decode(encoder.encode());
+        encoder.discardChanges(); // encode lifecycle contract — see simulateState.ts
     };
     apply(() => {});
     return { server, client, decoder, apply };
