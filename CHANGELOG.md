@@ -47,6 +47,16 @@ Targets Colyseus 0.18 / `@colyseus/schema` v5. From this release on, the package
 
 - Test harnesses now call `discardChanges()` after each `encode()`, matching what colyseus core does — without it, schema v5 re-emits stale ops against a frozen index space and corrupts sequential array-splice patches (this had 4 array tests failing).
 - New `predictHooks.test.tsx` suite covering the Predict hooks (lifecycle, ref-counting, StrictMode, event-channel reactivity, entity selection).
+
+## 0.1.19
+
+The colyseus 0.17 / schema v4 line; 0.18.1 carries the same fixes.
+
+### Fixes
+
+- Selectors that build their own container no longer crash the component with `Maximum update depth exceeded`. `useRoomState(room, (s) => Array.from(s.players.values()))` and `(s) => ({ message: s.myString })` now hold a stable reference between renders. ([#13](https://github.com/colyseus/react-tools/pull/13), reported by [@under-undefined](https://github.com/under-undefined), who also contributed the regression tests — thank you!)
+- Object-literal selectors return plain snapshot data, the way array selectors already did. `(s) => ({ player: s.players.get(id) })` previously handed back the live schema node.
+
 ## 0.1.18
 
 ### Fixes
