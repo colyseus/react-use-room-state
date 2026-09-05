@@ -80,7 +80,7 @@ export type Snapshot<T> = DeepReadonly<
     T extends IArray<infer U>
     ? Snapshot<U>[]
     : T extends IMap<infer K extends MapKey, infer U>
-    ? Record<K, Snapshot<U>>
+    ? Partial<Record<K, Snapshot<U>>>
     : T extends Primitive
     ? T
     : T extends object
