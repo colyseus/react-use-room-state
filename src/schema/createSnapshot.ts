@@ -120,10 +120,10 @@ function getRefId(node: object): number {
  */
 function createSnapshotForMapSchema(
     node: MapSchema<any>,
-    previousResult: Record<string, any> | undefined,
+    previousResult: Partial<Record<string, any>> | undefined,
     ctx: SnapshotContext
-): Record<string, any> {
-    const snapshotted: Record<string, any> = {};
+): Partial<Record<string, any>> {
+    const snapshotted: Partial<Record<string, any>> = {};
     let hasChanged = previousResult === undefined;
 
     for (const [key, value] of node) {
